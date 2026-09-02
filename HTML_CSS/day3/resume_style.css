@@ -1,0 +1,112 @@
+/* 전역 설정 — Bootstrap 위에 색상/타이포만 덮어씀 */
+body {
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  color: #2f3e46;
+  background-color: #fdfdfb;
+}
+
+a {
+  color: inherit;
+}
+
+/* 연락하기 바로가기 버튼 (Bootstrap position-fixed 유틸리티 사용).
+   모바일에서는 이 버튼이 어두운 사이드바 위에 겹쳐 보이므로,
+   사이드바(#2f3e46)·본문 배경(#fdfdfb) 어느 쪽 위에서도 도드라지는
+   중간 톤의 accent 색을 사용한다. */
+.top-link {
+  background-color: #52796f;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.top-link:hover {
+  background-color: #84a98c;
+}
+
+/* 사이드바: 어두운 배경 + 데스크탑에서는 화면에 고정(sticky)되어 스크롤해도 따라옴 */
+.sidebar {
+  background-color: #2f3e46;
+  color: #eef2ea;
+}
+
+.sidebar .tagline {
+  color: #cad2c5;
+  font-size: 0.9rem;
+}
+
+.sidebar .contacts a {
+  text-decoration: none;
+  font-size: 0.85rem;
+  color: #cad2c5;
+}
+
+.sidebar .contacts a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border: 4px solid #84a98c;
+}
+
+/* 반응형 디자인: 데스크탑 폭(md 이상)에서만 사이드바를 화면 높이에 고정 */
+@media (min-width: 768px) {
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+}
+
+/* 본문 섹션 제목: 왼쪽 강조 바 */
+.section-title {
+  border-left: 4px solid #52796f;
+  padding-left: 12px;
+  margin-bottom: 20px;
+  font-size: 1.25rem;
+}
+
+/* 학력/교육 표 */
+.table th {
+  background-color: #cad2c5;
+}
+
+/* 기술 태그(뱃지) */
+.skill-badge {
+  background-color: #eef2ea;
+  color: #354f52;
+  border: 1px solid #84a98c;
+  font-weight: 400;
+  padding: 0.5em 0.9em;
+}
+
+/* 프로젝트 카드 */
+.project-card {
+  border: 1px solid #cad2c5;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.project-card:hover {
+  border-color: #84a98c;
+  box-shadow: 0 4px 12px rgba(47, 62, 70, 0.08);
+}
+
+/* 연락 폼 버튼 */
+#contact .btn-dark {
+  background-color: #2f3e46;
+  border-color: #2f3e46;
+}
+
+#contact .btn-dark:hover {
+  background-color: #52796f;
+  border-color: #52796f;
+}
+
+.footer-bar {
+  color: #84a98c;
+  background-color: #cad2c5;
+  font-size: 0.8rem;
+}
