@@ -69,6 +69,13 @@ a {
   font-size: 1.25rem;
 }
 
+/* 프로젝트 진행 시기 — 카드 안에서 눈에 덜 띄는 보조 텍스트 */
+.project-date {
+  color: #52796f;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 /* 학력/교육 표 */
 .table th {
   background-color: #cad2c5;

@@ -133,6 +133,14 @@ th, td {
   margin-top: 0;
 }
 
+/* 프로젝트 진행 시기 — 카드 안에서 눈에 덜 띄는 보조 텍스트 */
+.project-date {
+  margin: -4px 0 8px 0;
+  color: #52796f;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 /* 연락 폼: Flexbox로 입력창을 가로 배치, 좁은 화면에서는 세로로 */
 #contact form {
   display: flex;
