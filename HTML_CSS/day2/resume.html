@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>아무개 - 이력서</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="./resume_style.css">
+</head>
+<body>
+
+  <a class="top-link" href="#contact">연락하기</a>
+
+  <header class="site-header">
+    <img class="profile-photo" src="./profile.svg" alt="프로필 사진">
+    <div class="header-text">
+      <h1>아무개</h1>
+      <p class="tagline">AI 헬스케어 부트캠프 수료 · 풀스택 개발 지망</p>
+      <div class="contacts">
+        <a href="mailto:example@email.com"><i class="fa-solid fa-envelope"></i> example@email.com</a>
+        <a href="https://github.com/lsi01/oz-ah-06"><i class="fa-brands fa-github"></i> github.com/lsi01/oz-ah-06</a>
+        <a href="https://iharurecord.tistory.com/"><i class="fa-solid fa-blog"></i> iharurecord.tistory.com</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="about">
+      <h2>자기소개</h2>
+      <p>의료 현장에서 진료 기록과 병동 운영이 실제로 어떻게 돌아가는지를 먼저 경험한 뒤, AI 헬스케어 부트캠프에서 그 현장을 데이터와 코드로 다루는 훈련을 했습니다.</p>
+      <p>강의 녹화본이 복습 자산으로 재활용되지 않는 문제를 스스로 정의하고 파이프라인을 설계·운영해본 것처럼, 요구사항을 받기보다 무엇을 만들지부터 정하는 방식으로 일합니다.</p>
+    </section>
+
+    <section id="education">
+      <h2>학력 및 교육</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>내용</th>
+            <th>기간</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>학력</td>
+            <td>OO대학교 컴퓨터공학과 (복수전공: 보건의료경영학과)</td>
+            <td>2020.03 ~ 2024.03</td>
+          </tr>
+          <tr>
+            <td>교육</td>
+            <td>AI 헬스케어 부트캠프 (Python·데이터분석·ML/DL·Git/GitHub·웹서비스·FastAPI·LLM/RAG)</td>
+            <td>2026.05 ~ 2026.11 (진행 중)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="skills">
+      <h2>보유 기술</h2>
+      <ul class="skill-list">
+        <li>Python</li>
+        <li>JavaScript</li>
+        <li>SQL</li>
+        <li>HTML/CSS</li>
+        <li>FastAPI</li>
+        <li>Pandas</li>
+        <li>PyTorch</li>
+        <li>LangChain/LangGraph</li>
+        <li>Git/GitHub</li>
+      </ul>
+    </section>
+
+    <section id="projects">
+      <h2>프로젝트 경험</h2>
+      <ol class="project-list">
+        <li class="project-card">
+          <h3>AI 헬스케어 학습 콘텐츠 파이프라인 &amp; 인터랙티브 학습 웹사이트</h3>
+          <p>부트캠프 강의 녹화본이 쌓이기만 하고 복습 자산으로 재활용되지 않는 문제를 정의하고, 영상 → 음성 추출 → STT 전사 → 프레임 캡처 → 기술 블로그 변환 파이프라인을 설계·운영해 60여 개 포스트를 발행했습니다. 같은 소스를 과목 탭과 스크롤 위치 추적 사이드바를 갖춘 단일 페이지 학습 웹사이트로도 빌드했습니다.</p>
+        </li>
+        <li class="project-card">
+          <h3>난임 환자 대상 임신 성공 여부 예측 AI 모델 개발</h3>
+          <p>67개 컬럼의 난임 시술 데이터에서 배아·유전검사 관련 컬럼의 결측률이 90%를 넘는 문제를 다뤘습니다. 처음엔 고결측 컬럼을 삭제했지만, 시술유형 교차분석으로 "결측이 곧 검사 불필요·인공수정 여부를 뜻하는 임상적 사건"임을 확인하고 삭제 대신 '미시행' 범주값과 결측 플래그로 전환해 성능을 개선했습니다.</p>
+        </li>
+        <li class="project-card">
+          <h3>흉부 X-ray 폐렴 분류 모델 개발</h3>
+          <p>정상/폐렴 이진 분류에서 클래스 불균형과 흐릿한 병변 음영으로 인한 낮은 판별 난이도 문제를 ResNet18 전이학습으로 접근했습니다. 의료영상 특성상 과한 crop·rotation은 병변 단서를 훼손할 수 있어 보수적 전처리를 적용했고, Accuracy 외 AUC·F1·민감도까지 함께 확인하며 실험을 버전별로 기록했습니다.</p>
+        </li>
+        <li class="project-card">
+          <h3>「숨표」 발달장애 가족돌봄자 복지제도 내비게이터 (해커톤)</h3>
+          <p>보호자의 짧은 체크인에서 소진 위험 신호를 LLM으로 요약하고, Rule Engine으로 자격요건·중복수급을 1차 점검하며, RAG로 신청방법과 근거를 제시하는 서비스를 기획했습니다. PWA 프론트와 REST API, 정책 DB를 하나의 구조로 통합하는 설계를 담당했습니다.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="contact">
+      <h2>연락하기</h2>
+      <p>아래 양식으로 메일을 보내실 수 있습니다.</p>
+      <form action="mailto:example@email.com" method="post" enctype="text/plain">
+        <input type="text" name="name" placeholder="이름">
+        <input type="email" name="email" placeholder="회신 받으실 이메일">
+        <input type="text" name="subject" placeholder="제목">
+        <button type="submit">메일 보내기</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 아무개. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

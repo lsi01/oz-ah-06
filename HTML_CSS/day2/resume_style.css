@@ -1,0 +1,186 @@
+/* 전역 설정 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  color: #2f3e46;
+  background-color: #fdfdfb;
+}
+
+/* 스크롤해도 항상 보이는 연락하기 바로가기 링크 (position: fixed) */
+.top-link {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  padding: 8px 14px;
+  background-color: #2f3e46;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  z-index: 10;
+}
+
+.top-link:hover {
+  background-color: #52796f;
+}
+
+/* 헤더: 프로필 사진 + 텍스트를 가로로 배치 (Flexbox) */
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 40px 24px;
+  background-color: #cad2c5;
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+}
+
+.header-text h1 {
+  margin: 0 0 4px 0;
+}
+
+.tagline {
+  margin: 0 0 12px 0;
+  color: #354f52;
+}
+
+/* 연락처를 가로로 나열하고 간격은 gap으로 관리 (Flexbox) */
+.contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.contacts a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.contacts a:hover {
+  text-decoration: underline;
+}
+
+/* 본문: 콘텐츠 양과 무관하게 footer를 하단에 고정 (flex: 1) */
+main {
+  flex: 1;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+/* 박스 모델 실습: padding·border로 표를 감싸기 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #cad2c5;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+/* 기술 태그: Flexbox로 여러 줄에 걸쳐 나란히 배치 */
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+}
+
+.skill-list li {
+  padding: 6px 14px;
+  border: 1px solid #84a98c;
+  border-radius: 16px;
+  font-size: 0.9rem;
+}
+
+/* 프로젝트 카드: 박스 모델(padding, border, margin) */
+.project-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.project-card {
+  padding: 20px;
+  border: 1px solid #cad2c5;
+  border-radius: 8px;
+}
+
+.project-card h3 {
+  margin-top: 0;
+}
+
+/* 연락 폼: Flexbox로 입력창을 가로 배치, 좁은 화면에서는 세로로 */
+#contact form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#contact input {
+  flex: 1;
+  min-width: 140px;
+  padding: 8px;
+  border: 1px solid #84a98c;
+  border-radius: 4px;
+}
+
+#contact button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #2f3e46;
+  color: #fff;
+  cursor: pointer;
+}
+
+#contact button:hover {
+  background-color: #52796f;
+}
+
+footer {
+  padding: 16px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #84a98c;
+  background-color: #cad2c5;
+}
+
+/* 반응형 디자인: 화면 너비가 600px보다 좁아지면 헤더를 세로로 재배치 */
+@media (max-width: 600px) {
+  .site-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .contacts {
+    justify-content: center;
+  }
+
+  #contact form {
+    flex-direction: column;
+  }
+}
