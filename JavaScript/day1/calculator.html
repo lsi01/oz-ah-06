@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>콘솔 사칙연산 계산기</title>
+    <script src="calculator.js"></script>
+  </head>
+  <body>
+    <h1>콘솔창 사칙연산 계산기</h1>
+    <p>계산은 페이지가 아니라 <strong>개발자도구 콘솔</strong>에서 실행합니다.</p>
+
+    <ol>
+      <li>
+        콘솔 열기 &mdash; Windows: <kbd>F12</kbd> /
+        Mac: <kbd>Option</kbd> + <kbd>Command</kbd> + <kbd>I</kbd>
+      </li>
+      <li><code>start()</code> 입력 &rarr; 계산식을 물어봅니다</li>
+      <li><code>start("1 + 2 * 3")</code> 처럼 바로 전달할 수도 있습니다</li>
+      <li><code>calculate("2*3+4")</code> 는 결과값(<code>10</code>)만 반환합니다</li>
+      <li><code>runExamples()</code> 로 여러 예시를 한 번에 확인합니다</li>
+    </ol>
+
+    <h2>규칙</h2>
+    <ul>
+      <li><code>+ - * /</code> 사칙연산</li>
+      <li><code>*</code>, <code>/</code> 를 <code>+</code>, <code>-</code> 보다 먼저 계산</li>
+      <li>피연산자 개수 제한 없음 &mdash; 긴 계산식도 처리</li>
+      <li>공백은 있어도 없어도 인식: <code>1 + 2</code> = <code>1+2</code></li>
+      <li>소수 지원: <code>1.5 * 2</code> &rarr; <code>3</code></li>
+    </ul>
+  </body>
+</html>
