@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS 사칙연산 계산기 (2일차)</title>
+    <link rel="stylesheet" href="calculator_style.css" />
+  </head>
+  <body>
+    <!--
+      버튼에 onclick 을 직접 쓰지 않고 data-* 속성만 둔다.
+      실제 동작 연결은 calculator.js 에서 querySelector + addEventListener 로 처리한다.
+        data-type  : 버튼 종류 (digit / operator / dot / clear / enter / power)
+        data-value : 입력될 값 (숫자, 연산자 기호)
+    -->
+    <div class="calculator">
+      <input type="text" id="display" value="0" readonly aria-label="계산 결과" />
+
+      <div class="buttons">
+        <button type="button" class="power" data-type="power">ON/OFF</button>
+        <button type="button" class="clear" data-type="clear">C</button>
+        <button type="button" class="operator" data-type="operator" data-value="/">/</button>
+
+        <button type="button" class="number" data-type="digit" data-value="7">7</button>
+        <button type="button" class="number" data-type="digit" data-value="8">8</button>
+        <button type="button" class="number" data-type="digit" data-value="9">9</button>
+        <button type="button" class="operator" data-type="operator" data-value="*">*</button>
+
+        <button type="button" class="number" data-type="digit" data-value="4">4</button>
+        <button type="button" class="number" data-type="digit" data-value="5">5</button>
+        <button type="button" class="number" data-type="digit" data-value="6">6</button>
+        <button type="button" class="operator" data-type="operator" data-value="-">-</button>
+
+        <button type="button" class="number" data-type="digit" data-value="1">1</button>
+        <button type="button" class="number" data-type="digit" data-value="2">2</button>
+        <button type="button" class="number" data-type="digit" data-value="3">3</button>
+        <button type="button" class="operator" data-type="operator" data-value="+">+</button>
+
+        <button type="button" class="number" data-type="dot" data-value=".">.</button>
+        <button type="button" class="number" data-type="digit" data-value="0">0</button>
+        <button type="button" class="enter" data-type="enter">Enter</button>
+      </div>
+    </div>
+
+    <!-- DOM 이 모두 만들어진 뒤 실행되도록 body 끝에서 로드 -->
+    <script src="calculator.js"></script>
+  </body>
+</html>
