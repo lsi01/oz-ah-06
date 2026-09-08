@@ -1,0 +1,553 @@
+/* 실시간 암호화폐 가격 변동 추적기 (JavaScript 3일차) */
+
+/* 한국 관례: 상승 = 빨강, 하락 = 파랑 */
+:root {
+  --up: #e12d39;
+  --down: #1d4ed8;
+  --flat: #6b7280;
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --border: #e3e6ea;
+  --text: #1f2430;
+  --muted: #6b7280;
+  --accent: #f59e0b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", "Apple SD Gothic Neo", Arial, sans-serif;
+  font-size: 14px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+h2 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+
+.app-header {
+  max-width: 1100px;
+  margin: 0 auto 16px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+/* 연결 상태 표시 */
+.status {
+  font-size: 0.8rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  color: var(--muted);
+}
+.status.live {
+  background: #dcfce7;
+  color: #15803d;
+}
+.status.error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ===== 시장 동향 ===== */
+.market {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.breadth-bar {
+  display: flex;
+  height: 14px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: #e5e7eb;
+}
+.breadth-up {
+  background: var(--up);
+}
+.breadth-down {
+  background: var(--down);
+}
+
+.breadth-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.breadth-legend b {
+  color: var(--text);
+}
+.breadth-legend .up b {
+  color: var(--up);
+}
+.breadth-legend .down b {
+  color: var(--down);
+}
+/* 평균 변동률(#avgChange)에 JS가 붙이는 방향 클래스 */
+#avgChange.up {
+  color: var(--up);
+}
+#avgChange.down {
+  color: var(--down);
+}
+#avgChange.flat {
+  color: var(--flat);
+}
+
+.boards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.board {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.board ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.board li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f1f3;
+}
+.board li:last-child {
+  border-bottom: none;
+}
+.board li:hover {
+  color: var(--accent);
+}
+.board li .sym {
+  font-weight: 600;
+}
+.board li .val.up {
+  color: var(--up);
+}
+.board li .val.down {
+  color: var(--down);
+}
+
+/* ===== 툴바 ===== */
+.toolbar {
+  max-width: 1100px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tabs {
+  display: flex;
+  gap: 6px;
+}
+.tab {
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.tab.active {
+  background: var(--text);
+  color: #fff;
+  border-color: var(--text);
+}
+.badge {
+  display: inline-block;
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.75rem;
+  text-align: center;
+}
+.tab.active .badge {
+  background: #fff;
+  color: var(--text);
+}
+
+.search {
+  flex: 1;
+  min-width: 180px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+.updated {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ===== 테이블 ===== */
+.table-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  max-height: 62vh;
+  overflow: auto; /* 좁은 화면에서 가로 스크롤 */
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.coin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.coin-table th,
+.coin-table td {
+  padding: 9px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+.coin-table thead th {
+  position: sticky;
+  top: 0;
+  background: #fafbfc;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--muted);
+  z-index: 1;
+}
+.coin-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.coin-table tbody tr {
+  border-bottom: 1px solid #f0f1f3;
+}
+.coin-table tbody tr:hover {
+  background: #f8fafc;
+  cursor: pointer;
+}
+.empty-row td {
+  text-align: center;
+  color: var(--muted);
+  padding: 30px;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.sortable:hover {
+  color: var(--text);
+}
+/* 24h 위치 게이지 */
+.col-range {
+  width: 84px;
+}
+.range-track {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 6px;
+  background: linear-gradient(
+    to right,
+    #bcd0f5 0,
+    #e5e7eb 45% 55%,
+    #f5c4c8 100%
+  );
+  border-radius: 3px;
+  vertical-align: middle;
+}
+.range-dot {
+  position: absolute;
+  top: -3px;
+  width: 6px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--text);
+  transform: translateX(-50%);
+}
+
+.sortable.sorted-asc::after {
+  content: " ▲";
+}
+.sortable.sorted-desc::after {
+  content: " ▼";
+}
+
+.col-fav {
+  width: 34px;
+  text-align: center;
+}
+.star {
+  background: none;
+  border: none;
+  padding: 4px;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  color: #d1d5db;
+  font-size: 1rem;
+}
+.star.on {
+  color: var(--accent);
+}
+.star:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-radius: 4px;
+}
+
+.chg.up {
+  color: var(--up);
+}
+.chg.down {
+  color: var(--down);
+}
+.chg.flat {
+  color: var(--flat);
+}
+
+/* 가격 변동 플래시는 JS(Web Animations API)로 처리 — app.js updateRow() 참고 */
+
+/* ===== 상세 패널 ===== */
+.detail {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 10;
+}
+/* hidden 속성이 붙어 있으면 숨긴다 (.detail 의 display:flex 가 기본 [hidden] 규칙을 덮어쓰므로 명시) */
+.detail[hidden] {
+  display: none;
+}
+.detail-box {
+  position: relative;
+  width: 680px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 22px;
+}
+.detail-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: #f1f5f9;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.detail-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.detail-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+.detail-price {
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+}
+.detail-price .chg.up {
+  color: var(--up);
+}
+.detail-price .chg.down {
+  color: var(--down);
+}
+
+.interval-buttons {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.interval-buttons button {
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+.interval-buttons button.active {
+  background: var(--text);
+  color: #fff;
+  border-color: var(--text);
+}
+
+.chart {
+  width: 100%;
+  height: 240px;
+  background: #fbfcfd;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.chart path {
+  fill: none;
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke; /* 가로로 늘어나도 선 굵기 유지 */
+}
+.chart .c-price {
+  stroke: #111827;
+}
+.chart .c-sma20 {
+  stroke: var(--accent);
+}
+.chart .c-sma50 {
+  stroke: #3b82f6;
+}
+.chart .c-band {
+  fill: rgba(245, 158, 11, 0.1); /* 볼린저 밴드 영역 */
+  stroke: none;
+}
+.chart .c-vol-up {
+  fill: rgba(225, 45, 57, 0.3);
+}
+.chart .c-vol-down {
+  fill: rgba(29, 78, 216, 0.3);
+}
+
+.chart-legend {
+  display: flex;
+  gap: 16px;
+  margin: 8px 2px 14px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.chart-legend span::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 3px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.chart-legend .k-price::before {
+  background: #111827;
+}
+.chart-legend .k-sma20::before {
+  background: var(--accent);
+}
+.chart-legend .k-sma50::before {
+  background: #3b82f6;
+}
+.chart-legend .k-band::before {
+  background: rgba(245, 158, 11, 0.35);
+  height: 10px;
+}
+.chart-legend .k-vol::before {
+  background: rgba(120, 120, 120, 0.45);
+  height: 10px;
+}
+
+/* 기술적 지표 카드 */
+.indicators {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.ind {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.ind .ind-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.ind .ind-value {
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.ind .tag {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+.tag.bull {
+  background: #fde2e4;
+  color: var(--up);
+}
+.tag.bear {
+  background: #dbeafe;
+  color: var(--down);
+}
+.tag.neutral {
+  background: #e5e7eb;
+  color: var(--flat);
+}
+
+/* RSI 게이지 */
+.rsi-gauge {
+  position: relative;
+  height: 8px;
+  margin-top: 8px;
+  border-radius: 4px;
+  background: linear-gradient(
+    to right,
+    #dbeafe 0 30%,
+    #e5e7eb 30% 70%,
+    #fde2e4 70% 100%
+  );
+}
+.rsi-gauge .marker {
+  position: absolute;
+  top: -3px;
+  width: 3px;
+  height: 14px;
+  background: #111827;
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+.detail-note {
+  margin: 12px 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+@media (max-width: 720px) {
+  .boards {
+    grid-template-columns: 1fr;
+  }
+  .indicators {
+    grid-template-columns: 1fr;
+  }
+}

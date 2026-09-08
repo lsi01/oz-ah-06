@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>실시간 암호화폐 가격 변동 추적기 (3일차)</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="title-row">
+        <h1>실시간 암호화폐 가격 변동 추적기</h1>
+        <span id="status" class="status">연결 중…</span>
+      </div>
+
+      <!-- [기능 2] 시장 동향: 상승/하락 폭 + 평균 변동률 -->
+      <div class="market" id="market">
+        <div class="market-breadth">
+          <div class="breadth-bar">
+            <span class="breadth-up" id="breadthUp"></span>
+            <span class="breadth-down" id="breadthDown"></span>
+          </div>
+          <div class="breadth-legend">
+            <span class="up">상승 <b id="countUp">-</b></span>
+            <span class="down">하락 <b id="countDown">-</b></span>
+            <span class="flat">보합 <b id="countFlat">-</b></span>
+            <span class="avg">평균 변동률 <b id="avgChange">-</b></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- [기능 2] 시장 동향: Top 상승/하락, 거래대금 상위 -->
+      <div class="boards">
+        <div class="board">
+          <h2>급등 Top 5</h2>
+          <ul id="boardGainers"></ul>
+        </div>
+        <div class="board">
+          <h2>급락 Top 5</h2>
+          <ul id="boardLosers"></ul>
+        </div>
+        <div class="board">
+          <h2>거래대금 Top 5</h2>
+          <ul id="boardVolume"></ul>
+        </div>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <!-- 필수: 전체보기 / 관심목록 탭 분리 -->
+      <div class="tabs">
+        <button type="button" class="tab active" data-tab="all">전체보기</button>
+        <button type="button" class="tab" data-tab="fav">
+          관심목록 <span class="badge" id="favCount">0</span>
+        </button>
+      </div>
+      <!-- 필수: 검색 -->
+      <input
+        type="search"
+        id="search"
+        class="search"
+        placeholder="심볼 검색 (예: BTC, ETH)"
+        autocomplete="off"
+      />
+      <span id="updated" class="updated"></span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="coin-table">
+        <thead>
+          <tr>
+            <th class="col-fav" aria-label="관심"></th>
+            <!-- [기능 3] 정렬 가능한 헤더 -->
+            <th class="col-symbol sortable" data-sort="symbol">심볼</th>
+            <th class="num sortable" data-sort="lastPrice">현재가</th>
+            <th class="num sortable" data-sort="priceChangePercent">24h 변동률</th>
+            <th class="num sortable" data-sort="quoteVolume">거래대금(USDT)</th>
+            <th class="num sortable" data-sort="highPrice">24h 고가</th>
+            <th class="num sortable" data-sort="lowPrice">24h 저가</th>
+            <th class="col-range" title="24h 저가~고가 중 현재가 위치">24h 위치</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr class="empty-row">
+            <td colspan="8">데이터를 불러오는 중…</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- [기능 1] 종목 상세 + 기술적 지표 (SMA20/50, RSI14) -->
+    <div class="detail" id="detail" hidden>
+      <div class="detail-box">
+        <button type="button" class="detail-close" id="detailClose" aria-label="닫기">✕</button>
+        <div class="detail-head">
+          <h2 id="detailTitle">—</h2>
+          <div class="detail-price" id="detailPrice"></div>
+        </div>
+
+        <div class="interval-buttons" id="intervalButtons">
+          <button type="button" data-interval="15m">15분</button>
+          <button type="button" data-interval="1h" class="active">1시간</button>
+          <button type="button" data-interval="4h">4시간</button>
+          <button type="button" data-interval="1d">1일</button>
+        </div>
+
+        <svg
+          id="chart"
+          class="chart"
+          viewBox="0 0 640 240"
+          preserveAspectRatio="none"
+          role="img"
+          aria-label="가격 차트"
+        ></svg>
+        <div class="chart-legend">
+          <span class="k-price">종가</span>
+          <span class="k-sma20">SMA 20</span>
+          <span class="k-sma50">SMA 50</span>
+          <span class="k-band">볼린저(20,2σ)</span>
+          <span class="k-vol">거래량</span>
+        </div>
+
+        <div class="indicators" id="indicators"></div>
+        <p class="detail-note" id="detailNote"></p>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
